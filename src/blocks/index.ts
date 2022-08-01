@@ -1,21 +1,21 @@
 type Page = NewPage | SavedPage;
 
-interface NewPage{
-    type: "new";
-    properties: {
-        title: string[][];
-};
-    content: string[]
-    format:{
-        page_icon: string;
-    };
-    parent: string;
-} 
+interface NewPage {
+  type: "page";
+  properties: {
+    title: string[][];
+  };
+  content: string[];
+  format: {
+    page_icon: string;
+  };
+  parent: string;
+}
 
-type SavedPage = NewPage & {id: string};
+type SavedPage = NewPage & { id: string };
 
 export interface BlockIndex {
-    blocks: string[];
+  blocks: string[];
 }
 
 export type Block = Page;

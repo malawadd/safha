@@ -11,7 +11,7 @@ import { IDX } from "@ceramicstudio/idx";
 import * as IDXTools from "@ceramicstudio/idx-tools";
 import { TileDocument } from "@ceramicnetwork/stream-tile";
 import { Schema } from "../schemas";
-// import { definitions } from "../config/deployedSchemas.json";
+import { definitions } from "../config/deployedSchemas.json";
 
 const API_URL = "https://ceramic-clay.3boxlabs.com";
 const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
@@ -37,8 +37,8 @@ const authenticateUser = async (provider: Web3Provider) => {
   const didProvider = await threeIdConnect.getDidProvider();
   ceramic.did?.setProvider(didProvider);
   await ceramic.did?.authenticate();
-//   const idx = new IDX({ ceramic, aliases: definitions });
-//   return idx;
+  const idx = new IDX({ ceramic, aliases: definitions });
+  return idx;
 };
 
 

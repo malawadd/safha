@@ -2,7 +2,7 @@ import CeramicClient from "@ceramicnetwork/http-client";
 import { TileDocument } from "@ceramicnetwork/stream-tile";
 import { IDX } from "@ceramicstudio/idx";
 import { Block, BlockIndex } from "../blocks";
-// import { schemas } from "../config/deployedSchemas.json";
+import { schemas } from "../config/deployedSchemas.json";
 
 const loadBlocks = async (idx: IDX, ceramic: CeramicClient) => {
   const blockIdsResponse = await idx.get<{ blocks: Array<string> }>("blocks");
