@@ -25,8 +25,7 @@ const ConnectIDX = () => {
   const { state, loadIDX } = useApp();
 
   if (
-    state.provider.status === "done" &&
-    state.ceramic.auth.status !== "done"
+    state.provider.status === "done" && state.idx.status !== "done"
   ) {
     const { provider } = state.provider;
     return (
