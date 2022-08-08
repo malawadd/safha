@@ -28,6 +28,11 @@ const loadClient = async ()=>{
     return ceramic;
 }
 
+const getReadOnlyIDX = () => {
+  let ceramic = new CeramicClient("https://gateway.ceramic.network");
+  return new IDX({ ceramic, aliases: definitions });
+};
+
 const authenticateUser = async (provider: Web3Provider) => {
   const signer = await provider.getSigner();
   const address = await signer.getAddress();
@@ -77,6 +82,7 @@ const authenticateApp = async (seed: string) => {
     authenticateApp,
     publishSchema,
     publishDefinition,
+    getReadOnlyIDX
   };
   
   export default exp;

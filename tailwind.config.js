@@ -1,11 +1,22 @@
 module.exports = {
-    purge: [],
-    darkMode: false,
-    theme: {
-      extend: {},
+  purge: [],
+  darkMode: false,
+  theme: {
+    extend: {
+      cursor: {
+        grab: 'grab',
+        grabbing: 'grabbing'
+      }
     },
-    variants: {
-      extend: {},
+    fontFamily: {
+      sans: ['Helvetica Neue'],
+      script: ['Contrail One']
+    }
+  },
+  variants: {
+    extend: {
+      visibility: ['hover']
     },
-    plugins: [],
-  }
+  },
+  plugins: [],
+}
