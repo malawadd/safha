@@ -37,7 +37,8 @@ interface Params {
           console.log(block.controllers);
           const accounts = await idx.loadAccounts(
             idxClient,
-            block.controllers[0]
+            "did:3:kjzl6cwe1jw14aalj2ctglxl8xwof3egezj9wpr5vaep32pohkro4v0k1kaz56r"
+
           );
           console.log(accounts);
           const profile = await idx.loadProfile(

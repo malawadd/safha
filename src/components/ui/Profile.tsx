@@ -15,7 +15,7 @@ const Profile = ({ profile, address, name }: Props) => {
     return (
         <div className="col-span-3">
       <div className="absolute bg-gradient-to-tr from-blue-200 via-purple-200 to-purple-50 w-screen h-72">
-      {true && (
+      {profile.image && (
           <img
             className="object-cover object-center w-screen h-72 shadow-sm"
             src={
@@ -27,7 +27,7 @@ const Profile = ({ profile, address, name }: Props) => {
       <div className="p-12 top-36 relative flex lg:flex-row lg:justify-evenly flex-col ">
         <div>
           <div className="mb-2 p-2">
-            {true ? (
+            {profile.image ? (
               <img
                 className="shadow-md rounded-lg"
                 src={"https://www.fillmurray.com/150/150"}
@@ -40,7 +40,7 @@ const Profile = ({ profile, address, name }: Props) => {
           </div>
           <div className="mb-2 p-2">
             <h1 className="text-3xl font-bold">
-              {profile.name} {true && profile.emoji}
+              {profile.name} {profile.image && profile.emoji}
             </h1>
             <div>
               <span className="group">
