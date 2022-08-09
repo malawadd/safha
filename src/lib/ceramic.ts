@@ -14,7 +14,7 @@ import { Schema } from "../schemas";
 import { definitions } from "../config/deployedSchemas.json";
 import { Block } from "../blocks";
 import { BlockParams } from "./idx";
-import BlockSchema from "../schemas/eth.doxx.Block";
+
 
 const API_URL = "https://ceramic-clay.3boxlabs.com";
 const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
@@ -84,7 +84,7 @@ const authenticateApp = async (seed: string) => {
     blockId: string
     ): Promise<Block> => {
       const blockResponse = await ceramic.loadStream<TileDocument>(blockId);
-      const content = blockResponse.content as BlockParams;
+      const content: BlockParams = blockResponse.content as BlockParams;
       console.log("content");
       console.log(content);
     return {
@@ -98,22 +98,20 @@ const authenticateApp = async (seed: string) => {
     ceramic: CeramicClient,
     blockIds: string[]
     ): Promise<Block[]> => {
-    // const queries = blockIds.map((id) => {
-    //   return { streamId: id };
-    // });
-    // const blocksResponse = await ceramic.multiQuery(queries);
-    // let blocks = [];
-    // for (const key in blocksResponse) {
-    //   let id = `ceramic://${key}`;
-    //   blocks.push({
-    //     id: id,
-    //     ...blocksResponse[key].state.content,
-    //   });
-    // }
-    let blocks: Block[] = [];
-  for (const id of blockIds) {
-    const block = await readBlock(ceramic, id);
-    blocks.push(block);
+    const queries = blockIds.map((id) => {
+      return { streamId: id };
+    });
+    const blocksResponse = await ceramic.multiQuery(queries);
+    let blocks = [];
+    for (const key in blocksResponse) {
+      const id = `ceramic://${key}`;
+      const content = (blocksResponse[key] as TileDocument)
+        .content as BlockParams;
+      blocks.push({
+        id: id,
+        saveState: "saved",
+        ...content,
+      } as Block);
   }
     return blocks;
   };
