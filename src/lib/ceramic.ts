@@ -16,13 +16,11 @@ import { BlockParams } from "./idx";
 import { v4 as uuid } from "uuid";
 
 const API_URL = "https://ceramic-clay.3boxlabs.com";
-const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
-
+const ceramic = new CeramicClient(API_URL);
 const resolver = {
   ...KeyDidResolver.getResolver(),
   ...ThreeIdResolver.getResolver(ceramic),
 };
-
 const CERAMIC_DID = new DID({ resolver });
 
 const loadClient = async () => {
@@ -31,7 +29,7 @@ const loadClient = async () => {
 };
 
 const getReadOnlyIDX = () => {
-  let ceramic = new CeramicClient("https://gateway.ceramic.network");
+  let ceramic = new CeramicClient("https://gateway-clay.ceramic.network");
   return new IDX({ ceramic, aliases: definitions });
 };
 
@@ -64,7 +62,12 @@ const publishSchema = async (ceramic: CeramicClient, schema: Schema) => {
   return publishedSchema;
 };
 
-const publishDefinition = async (ceramic: CeramicClient, definitionName: string, definitionDescription: string, schema: TileDocument) => {
+const publishDefinition = async (
+  ceramic: CeramicClient,
+  definitionName: string,
+  definitionDescription: string,
+  schema: TileDocument
+) => {
   return await IDXTools.createDefinition(ceramic, {
     name: definitionName,
     description: definitionDescription,
@@ -72,11 +75,13 @@ const publishDefinition = async (ceramic: CeramicClient, definitionName: string,
   });
 };
 
-const readBlock = async (ceramic: CeramicClient, blockId: string): Promise<Block> => {
+const readBlock = async (
+  ceramic: CeramicClient,
+  blockId: string
+): Promise<Block> => {
   const blockResponse = await ceramic.loadStream<TileDocument>(blockId);
+  console.log(blockResponse);
   const content: BlockParams = blockResponse.content as BlockParams;
-  console.log("content");
-  console.log(content);
   return {
     ...content,
     id: blockId,
@@ -87,7 +92,10 @@ const readBlock = async (ceramic: CeramicClient, blockId: string): Promise<Block
   };
 };
 
-const readBlocks = async (ceramic: CeramicClient, blockIds: string[]): Promise<Block[]> => {
+const readBlocks = async (
+  ceramic: CeramicClient,
+  blockIds: string[]
+): Promise<Block[]> => {
   const queries = blockIds.map((id) => {
     return { streamId: id };
   });

@@ -12,16 +12,15 @@ import Menu from "../components/ui/Menu";
 import { Link } from "react-router-dom";
 import Editor from "../components/Editor";
 
-
 interface Params {
-    id: string;
-  }
+  id: string;
+}
 
-  const idxClient = ceramic.getReadOnlyIDX();
-  
-  function Page() {
-    let { id } = useParams<Params>();
-    let { state, loadCeramic, setBlock, setActivePage } = useApp();
+const idxClient = ceramic.getReadOnlyIDX();
+
+function Page() {
+  let { id } = useParams<Params>();
+  let { state, loadCeramic, setBlock, setActivePage } = useApp();
   let [loadingState, setLoadingState] = useState("pending");
 
   useEffect(() => {
@@ -37,8 +36,7 @@ interface Params {
           console.log(block.controllers);
           const accounts = await idx.loadAccounts(
             idxClient,
-            "did:3:kjzl6cwe1jw14aalj2ctglxl8xwof3egezj9wpr5vaep32pohkro4v0k1kaz56r"
-
+            block.controllers[0]
           );
           console.log(accounts);
           const profile = await idx.loadProfile(
@@ -62,10 +60,11 @@ interface Params {
     };
     loadPage();
   }, [state.ceramic, id, setBlock, setActivePage]);
-    return (
-        <Grid>
-            <FullPage>
-            {loadingState === "failed" ? (
+
+  return (
+    <Grid>
+      <FullPage>
+        {loadingState === "failed" ? (
           <NotFound />
         ) : (
           <div>
@@ -81,10 +80,10 @@ interface Params {
             </PageContent>
           </div>
         )}
-                <StatusPanel />
-                </FullPage>
-        </Grid>
-    )
+        <StatusPanel />
+      </FullPage>
+    </Grid>
+  );
 }
 
 export default Page;
