@@ -6,8 +6,14 @@ import { Block, BlockIndex, Page, PageIndex } from "../blocks";
 import { schemas } from "../config/deployedSchemas.json";
 import ceramic from "./ceramic";
 
-export type BlockParams = Omit<Block, "id" | "saveState" | "drafts" | "key">;
-export type PageParams = Omit<Page, "id" | "saveState" | "drafts" | "key">;
+export type BlockParams = Omit<
+  Block,
+  "id" | "saveState" | "drafts" | "key" | "editorState"
+>;
+export type PageParams = Omit<
+  Page,
+  "id" | "saveState" | "drafts" | "key" | "editorState"
+>;
 
 
 const loadBlocks = async (idx: IDX, ceramicClient: CeramicClient) => {

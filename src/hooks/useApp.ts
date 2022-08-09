@@ -7,6 +7,7 @@ import { IDX } from "@ceramicstudio/idx";
 import idx from "../lib/idx";
 import CeramicClient from "@ceramicnetwork/http-client";
 import { Block, Page } from "../blocks";
+import { EditorState } from "draft-js";
 
 function useApp() {
   const { state, dispatch } = useContext(AppContext);
@@ -169,12 +170,26 @@ function useApp() {
   const saveBlock = useCallback(
     async (ceramic: CeramicClient, block: Block) => {
       dispatch({ type: "save block", block: block });
-      const { id, saveState, ...blockParams } = block;
+      console.log("saving...");
+      await new Promise((r) => setTimeout(r, 2000));
+      console.log(block);
+      const { id, saveState, drafts, ...blockParams } = block;
       await idx.updateBlock(ceramic, blockParams, id);
       dispatch({
         type: "save block complete",
         block: block,
         savedBlock: block,
+      });
+    },
+    [dispatch]
+  );
+
+  const setEditorState = useCallback(
+    async (key: string, editorState: EditorState) => {
+      dispatch({
+        type: "set editor state",
+        key: key,
+        editorState: editorState,
       });
     },
     [dispatch]
@@ -221,6 +236,7 @@ function useApp() {
     setBlock,
     setActivePage,
     setActiveBlock,
+    setEditorState,
   };
 }
 
