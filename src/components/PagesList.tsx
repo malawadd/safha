@@ -1,6 +1,7 @@
 import useApp from "../hooks/useApp";
+import { SavedBlock } from "../blocks";
 
-const Pages = () => {
+const PagesList  = () => {
     const {
         state: {
             pages: { status, pages },
@@ -16,7 +17,11 @@ const Pages = () => {
             return (
               <li
                 onClick={() => setActivePage(page)}
-                className="hover:bg-purple-300 py-1 px-4 cursor-pointer truncate"
+                className={`${
+                  activePage && (activePage as SavedBlock).id === id
+                    ? "hover:bg-purple-400 bg-purple-300"
+                    : "hover:bg-purple-300"
+                } py-1 px-4 cursor-pointer truncate`}
               >
                 <span className="text-l mx-1">{page.format.page_icon}</span>{" "}
                 {page.properties.title}
@@ -28,4 +33,4 @@ const Pages = () => {
     );
 };
 
-export default Pages;
+export default PagesList ;

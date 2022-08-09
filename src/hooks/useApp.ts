@@ -6,7 +6,7 @@ import { Web3Provider } from "@ethersproject/providers";
 import { IDX } from "@ceramicstudio/idx";
 import idx from "../lib/idx";
 import CeramicClient from "@ceramicnetwork/http-client";
-import { Block } from "../blocks";
+import { Block, SavedBlock } from "../blocks";
 
 function useApp() {
   const { state, dispatch } = useContext(AppContext);
@@ -22,7 +22,7 @@ function useApp() {
         address: address,
         ensName: ensName,
       });
-      loadCeramic();
+
     } catch (err) {
       dispatch({ type: "provider failed", error: err });
     }
@@ -90,6 +90,12 @@ function useApp() {
     },
     [dispatch]
   );
+  const newPage = useCallback(
+    (page: SavedBlock) => {
+      dispatch({ type: "new page", page: page });
+    },
+    [dispatch]
+  );
 
   return {
     state,
@@ -100,6 +106,7 @@ function useApp() {
     loadBlocks,
     setActiveBlock,
     setActivePage,
+    newPage,
   };
 }
 

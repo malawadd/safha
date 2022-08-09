@@ -1,6 +1,6 @@
 import Content from "../components/Content";
 import Grid from "../components/Grid";
-import Pages from "../components/Pages";
+import Pages from "../components/PagesList";
 import Sidebar from "../components/Sidebar";
 import Connections from "../components/Connections";
 import Blocks from "../components/Blocks";
@@ -28,7 +28,7 @@ function ViewProfile(){
             }
         }
         loadProfile();
-    }, []);
+    }, [id]);
 
     return (
         <Grid>
