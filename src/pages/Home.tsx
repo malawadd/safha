@@ -11,6 +11,7 @@ import useApp from "../hooks/useApp";
 import { useEffect } from "react";
 import Menu from "../components/Menu";
 import CopyLink from "../components/CopyLink";
+import Blocks from "../components/Blocks";
 
 function Home(){
     const { state, loadCeramic, loadPages, loadBlocks } = useApp();
@@ -39,6 +40,7 @@ useEffect(() => {
         </Menu>
                 <Editor>
                 <PageHeader />
+                <Blocks />
                 </Editor>
                 <Connections />
             </Content>

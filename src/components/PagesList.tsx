@@ -9,6 +9,12 @@ const PagesList  = () => {
           setActivePage,
     } = useApp();
 
+    const convert = (html: string) => {
+      var divContainer = document.createElement("div");
+      divContainer.innerHTML = html;
+      return (divContainer.textContent || "").replaceAll(/\n/g, " ");
+    };
+
     const pageIcon = (page: Page) => {
       if (page.saveState === "saving") {
         return (

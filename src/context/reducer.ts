@@ -62,7 +62,7 @@ type PagesFailedState = {
 };
 type PagesLoadedState = { status: "done"; pages: Map<string, Page> };
 type PagesState = PagesPendingState | PagesFailedState | PagesLoadedState;
-type ActivePageState = Block | null;
+type ActivePageState = Page | null;
 
 export interface State {
   provider: ProviderState;
@@ -110,12 +110,26 @@ export type SetBlocks = {
   type: "blocks loaded";
   blocks: Map<string, Block>;
 };
-export type BlocksAction = LoadBlocks | LoadBlocksFailed | SetBlocks;
+export type NewBlock = { type: "new block"; block: Block };
+export type SaveBlock = { type: "save block"; block: Block };
+export type SaveBlockComplete = {
+  type: "save block complete";
+  block: Block;
+  savedBlock: Block;
+};
+export type BlocksAction =
+  | LoadBlocks
+  | LoadBlocksFailed
+  | SetBlocks
+  | NewBlock
+  | SaveBlock
+  | SaveBlockComplete;
 export type SetActiveBlock = { type: "set active block"; block: Block };
 export type LoadPages = { type: "pages loading" };
 export type LoadPagesFailed = { type: "pages failed"; error: Error };
 export type SetPages = { type: "pages loaded"; pages: Map<string, Page> };
 export type NewPage = { type: "new page"; page: Page };
+export type SetPage = { type: "set page"; page: Page };
 export type SavePage = { type: "save page"; page: Page };
 export type SavePageComplete = {
   type: "save page complete";
@@ -127,6 +141,7 @@ export type PagesAction =
   | LoadPagesFailed
   | SetPages
   | NewPage
+  | SetPage
   | SavePage
   | SavePageComplete;
 
@@ -248,6 +263,10 @@ export const reducer = (state: State, action: Action): State => {
       case "set active page":
         return {
           ...state,
+          pages: {
+            ...state.pages,
+            pages: state.pages.pages.set(action.page.id, action.page),
+          },
           activePage: action.page,
         };
       
@@ -260,6 +279,14 @@ export const reducer = (state: State, action: Action): State => {
           pages: state.pages.pages.set(action.page.id, action.page),
         },
       };
+      case "set page":
+        return {
+          ...state,
+          pages: {
+            ...state.pages,
+            pages: state.pages.pages.set(action.page.id, action.page),
+          },
+        };
     case "save page":
       return {
         ...state,
@@ -272,12 +299,47 @@ export const reducer = (state: State, action: Action): State => {
         },
       };
     case "save page complete":
+      const newPages = new Map(state.pages.pages);
+      newPages.delete(action.page.id);
       return {
         ...state,
         pages: {
           ...state.pages,
-          pages: state.pages.pages.set(action.page.id, {
+          pages: newPages.set(action.savedPage.id, {
             ...action.savedPage,
+            saveState: "saved",
+          }),
+        },
+      };
+    
+      case "new block":
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          blocks: state.blocks.blocks.set(action.block.id, action.block),
+        },
+      };
+    case "save block":
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          blocks: state.blocks.blocks.set(action.block.id, {
+            ...action.block,
+            saveState: "saving",
+          }),
+        },
+      };
+    case "save block complete":
+      const newBlocks = new Map(state.blocks.blocks);
+      newBlocks.delete(action.block.id);
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          blocks: newBlocks.set(action.savedBlock.id, {
+            ...action.savedBlock,
             saveState: "saved",
           }),
         },
