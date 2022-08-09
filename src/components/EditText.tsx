@@ -1,3 +1,5 @@
+import useApp from "../hooks/useApp";
+import Text from "./ui/Text";
 import { Block, Text as TextBlock } from "../blocks";
 import { useRef } from "react";
 
@@ -17,6 +19,7 @@ import "prismjs/themes/prism.css";
 import PluginEditor from "@draft-js-plugins/editor";
 import { useCallback } from "react";
 import SaveSpinner from "./ui/SaveSpinner";
+
 interface Props {
   block: Block;
 }
@@ -27,8 +30,8 @@ export const createPlugins = () => {
   });
   const emojiPlugin = createEmojiPlugin({
     useNativeArt: true,
-  })
-  const {EmojiSuggestions} = emojiPlugin;
+  });
+  const { EmojiSuggestions } = emojiPlugin;
   const plugins = [
     createMarkdownShortcutsPlugin(),
     emojiPlugin,
@@ -45,6 +48,7 @@ const getInitialState = (
   const editorState = editorStates.get(key);
   if (editorState) {
     return editorState;
+    //return EditorState.moveFocusToEnd(editorState);
   } else {
     const content = properties.title[0][0];
     if (content === "") {
@@ -55,7 +59,6 @@ const getInitialState = (
   }
 };
 
-
 const EditText = ({ block }: Props) => {
   const {
     state: { ceramic, editorStates },
@@ -64,7 +67,6 @@ const EditText = ({ block }: Props) => {
     setActiveBlock,
     setEditorState,
   } = useApp();
-  
   const [editorState, setEditorState2] = useState(
     getInitialState(editorStates, block as TextBlock)
   );
@@ -74,13 +76,11 @@ const EditText = ({ block }: Props) => {
   const handleChange = useCallback(
     (newEditorState: EditorState) => {
       if (newEditorState !== editorState) {
-        console.log(block.saveState);
         setEditorState(block.key, newEditorState);
         setEditorState2(newEditorState);
         if (
           newEditorState.getCurrentContent() !== editorState.getCurrentContent()
         ) {
-          console.log("setting state to changed");
           const updatedBlock: Block = {
             ...block,
             type: "text",
@@ -100,16 +100,16 @@ const EditText = ({ block }: Props) => {
         }
       }
     },
+
     [block, editorState, setEditorState, setBlock]
   );
 
-
   const handleBlur = useCallback(() => {
     if (
-        ceramic.status === "done" &&
-        block.saveState === "changed" &&
-        block.id.startsWith("ceramic://")
-      ) {
+      ceramic.status === "done" &&
+      block.saveState === "changed" &&
+      block.id.startsWith("ceramic://")
+    ) {
       saveBlock(ceramic.ceramic, block);
     }
   }, [ceramic, block, saveBlock]);
@@ -124,7 +124,7 @@ const EditText = ({ block }: Props) => {
 
   return (
     <Text>
-       <div className="flex flex-row" onClick={handleClick}>
+      <div className="flex flex-row" onClick={handleClick}>
         <SaveSpinner block={block} />
         <div className="ml-2">
           <Editor

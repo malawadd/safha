@@ -2,12 +2,7 @@ module.exports = {
   purge: [],
   darkMode: false,
   theme: {
-    extend: {
-      cursor: {
-        grab: 'grab',
-        grabbing: 'grabbing'
-      }
-    },
+    extend: {},
     fontFamily: {
       sans: ['Helvetica Neue'],
       script: ['Contrail One']

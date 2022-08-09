@@ -2,8 +2,8 @@ import { Block } from "../blocks";
 import Heading from "../blocks/Heading";
 import Page from "../blocks/Page";
 import Text from "../blocks/Text";
-import useApp from "../hooks/useApp";
 import useActivePage from "../hooks/useActivePage";
+import useApp from "../hooks/useApp";
 
 interface Props {
   enabled: boolean;
@@ -12,17 +12,17 @@ interface Props {
 const Blocks = ({ enabled }: Props) => {
   const {
     state: {
-        blocks: { blocks, drafts },
-      },
+      blocks: { blocks, drafts },
+    },
   } = useApp();
   const { page } = useActivePage();
 
   const renderBlock = (block: Block) => {
     switch (block.type) {
       case "page":
-        return <Heading block={block} key={block.key} enabled={enabled} />;
-        case "text":
-        return <Heading block={block} key={block.key} enabled={enabled} />;
+        return <Page block={block} key={block.key} enabled={enabled} />;
+      case "text":
+        return <Text block={block} key={block.key} enabled={enabled} />;
       case "heading-1":
         return <Heading block={block} key={block.key} enabled={enabled} />;
       case "heading-2":
@@ -36,12 +36,14 @@ const Blocks = ({ enabled }: Props) => {
 
   const renderBlocks = (blockIds: string[]) => {
     return blockIds.map((id: string) => {
-        const block = blocks.get(id) || drafts.get(id);
+      const block = blocks.get(id) || drafts.get(id);
       return block && renderBlock(block);
     });
   };
 
-  return <div>{page && renderBlocks(page.content)}</div>;
+  const blocksAndDrafts = page ? [...page.content, ...page.drafts] : [];
+
+  return <div>{page && renderBlocks(blocksAndDrafts)}</div>;
 };
 
 export default Blocks;
