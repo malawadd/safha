@@ -9,7 +9,7 @@ import useApp from "../hooks/useApp";
       className="cursor-pointer"
       onClick={() => {
         const page = state.blocks.blocks.get(id);
-        page && setActivePage(page);
+        page && setActivePage(page.id);
       }}
     >
       <span className="text-l">{format.page_icon}</span>{" "}

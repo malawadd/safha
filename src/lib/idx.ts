@@ -24,16 +24,8 @@ const loadBlocks = async (idx: IDX, ceramicClient: CeramicClient) => {
 const loadPages = async (idx: IDX, ceramicClient: CeramicClient) => {
   const pageIdsResponse = await idx.get<{ pages: Array<string> }>("pages");
   const pageIds = pageIdsResponse?.pages ?? [];
-  const queries = pageIds.map((id) => {
-    return { streamId: id };
-  });
-  const pagesResponse = await ceramic.multiQuery(queries);
-  let pages = new Map<string, Page>();
-  pagesResponse.forEach((page) => {
-    pages.set(page.id, page);
-  });
-  console.log(pages);
-  return pages;
+ 
+  return pageIds;
 };
 
 
@@ -50,6 +42,7 @@ const createBlock = async (
   });
   const blockIndex = await idx.get<BlockIndex>("blocks");
   const blocks = blockIndex?.blocks ?? [];
+  console.log(blockIndex);
   await idx.set("blocks", {
     blocks: [...blocks, newBlock.id.toUrl()],
   });

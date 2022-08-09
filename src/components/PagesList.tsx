@@ -4,9 +4,9 @@ import { Page, SaveState } from "../blocks";
 const PagesList  = () => {
     const {
         state: {
-            pages: { status, pages },
+          blocks: { blocks, drafts },
+          pages: { status, pageIds, draftIds },
           },
-          setActivePage,
     } = useApp();
 
     const convert = (html: string) => {
@@ -50,19 +50,22 @@ const PagesList  = () => {
     return (
         <ul>
             {status === "done"
-        ? Array.from(pages).map(([id, page]) => {
+         ? [...pageIds, ...draftIds].map((id) => {
+          const page = blocks.get(id) || drafts.get(id);
+          if (page) {
             return (
               <li
-                onClick={() => setActivePage(page)}
+                onClick={() => setActivePage(page.id)}
                 className={`${
-                  activePage && activePage.id === id
+                  activePage === id
                     ? "hover:bg-purple-400 bg-purple-300"
                     : "hover:bg-purple-300"
                 } py-1 px-4 cursor-pointer truncate`}
               >
-                 {pageIcon(page)} {page.properties.title}
+                {pageIcon(page)} {convert(page.properties.title[0][0])}
               </li>
             );
+          }
           })
             : ""}
         </ul>
