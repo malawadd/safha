@@ -16,11 +16,15 @@ const Blocks = () => {
   const renderBlock = (block: Block) => {
     switch (block.type) {
       case "page":
-        return <Page block={block} />;
+        return <Page block={block} key={block.key} />;
         case "text":
-            return <Text block={block} />;
-          case "heading":
-            return <Heading block={block} />;
+            return <Text block={block} key={block.key} />;
+      case "heading-1":
+        return <Heading block={block} key={block.key} />;
+      case "heading-2":
+        return <Heading block={block} key={block.key} />;
+      case "heading-3":
+        return <Heading block={block} key={block.key} />;
       default:
         return <div></div>;
     }

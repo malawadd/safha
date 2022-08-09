@@ -14,6 +14,7 @@ import { Schema } from "../schemas";
 import { definitions } from "../config/deployedSchemas.json";
 import { Block } from "../blocks";
 import { BlockParams } from "./idx";
+import { v4 as uuid } from "uuid";
 
 
 const API_URL = "https://ceramic-clay.3boxlabs.com";
@@ -88,9 +89,11 @@ const authenticateApp = async (seed: string) => {
       console.log("content");
       console.log(content);
     return {
+      ...content,
       id: blockId,
       saveState: "saved",
-      ...content,
+      key: uuid(),
+      drafts: [],
     };
   };
   
@@ -108,9 +111,11 @@ const authenticateApp = async (seed: string) => {
       const content = (blocksResponse[key] as TileDocument)
         .content as BlockParams;
       blocks.push({
+        ...content,
         id: id,
         saveState: "saved",
-        ...content,
+        key: uuid(),
+      drafts: [],
       } as Block);
   }
     return blocks;

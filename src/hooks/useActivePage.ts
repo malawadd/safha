@@ -1,4 +1,5 @@
 import useApp from "./useApp";
+import { Page } from "../blocks";
 
 const useActivePage = () => {
   const {
@@ -8,7 +9,8 @@ const useActivePage = () => {
     },
   } = useApp();
 
-  const page = blocks.get(activePage) || drafts.get(activePage);
+  const page = (blocks.get(activePage) || drafts.get(activePage)) as Page;
+
   return { page };
 };
 

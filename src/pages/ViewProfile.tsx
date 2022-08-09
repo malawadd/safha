@@ -4,7 +4,7 @@ import Pages from "../components/PagesList";
 import Sidebar from "../components/ui/Sidebar";
 import StatusPanel from "../components/StatusPanel";
 
-import Editor from "../components/ui/Editor";
+import PageContent from "../components/ui/Editor";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import ceramic from "../lib/ceramic";
@@ -36,9 +36,9 @@ function ViewProfile(){
           <Pages />
         </Sidebar>
         <Content>
-          <Editor>
+          <PageContent>
             <p>View profile: {id}</p>
-          </Editor>
+          </PageContent>
           <StatusPanel />
         </Content>
       </Grid>

@@ -3,7 +3,8 @@ import Grid from "../components/ui/Grid";
 import Pages from "../components/PagesList";
 import Sidebar from "../components/ui/Sidebar";
 import StatusPanel from "../components/StatusPanel";
-import Editor from "../components/ui/Editor"
+import PageContent from "../components/ui/Editor";
+import Heading from "../components/ui/Heading";
 
 function EditProfile(){
     return (
@@ -12,10 +13,10 @@ function EditProfile(){
                 <Pages />
             </Sidebar>
             <Content>
-                <Editor>
+            <PageContent>
                     <p>Edit Profile </p>
                     
-                </Editor>
+                </PageContent>
                 <StatusPanel />
             </Content>
         </Grid>
