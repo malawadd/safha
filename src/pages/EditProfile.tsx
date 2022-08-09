@@ -1,9 +1,9 @@
 import Content from "../components/Content";
 import Grid from "../components/Grid";
-import Pages from "../components/Pages";
+import Pages from "../components/PagesList";
 import Sidebar from "../components/Sidebar";
 import Connections from "../components/Connections";
-import Blocks from "../components/Blocks";
+import Blocks from "../components/PageHeader";
 import Editor from "../components/Editor";
 
 function EditProfile(){
@@ -15,7 +15,7 @@ function EditProfile(){
             <Content>
                 <Editor>
                     <p>Edit Profile </p>
-                    <Blocks />
+                    
                 </Editor>
                 <Connections />
             </Content>

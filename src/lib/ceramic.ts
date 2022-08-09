@@ -12,7 +12,9 @@ import * as IDXTools from "@ceramicstudio/idx-tools";
 import { TileDocument } from "@ceramicnetwork/stream-tile";
 import { Schema } from "../schemas";
 import { definitions } from "../config/deployedSchemas.json";
-import { SavedBlock } from "../blocks";
+import { Block } from "../blocks";
+import { BlockParams } from "./idx";
+import BlockSchema from "../schemas/eth.doxx.Block";
 
 const API_URL = "https://ceramic-clay.3boxlabs.com";
 const ceramic = new CeramicClient("https://ceramic-clay.3boxlabs.com");
@@ -80,30 +82,39 @@ const authenticateApp = async (seed: string) => {
   const readBlock = async (
     ceramic: CeramicClient,
     blockId: string
-  ): Promise<SavedBlock> => {
-    const blockResponse = await ceramic.loadStream(blockId);
+    ): Promise<Block> => {
+      const blockResponse = await ceramic.loadStream<TileDocument>(blockId);
+      const content = blockResponse.content as BlockParams;
+      console.log("content");
+      console.log(content);
     return {
       id: blockId,
-      ...blockResponse.state.content,
+      saveState: "saved",
+      ...content,
     };
   };
   
   const readBlocks = async (
     ceramic: CeramicClient,
     blockIds: string[]
-  ): Promise<SavedBlock[]> => {
-    const queries = blockIds.map((id) => {
-      return { streamId: id };
-    });
-    const blocksResponse = await ceramic.multiQuery(queries);
-    let blocks = [];
-    for (const key in blocksResponse) {
-      let id = `ceramic://${key}`;
-      blocks.push({
-        id: id,
-        ...blocksResponse[key].state.content,
-      });
-    }
+    ): Promise<Block[]> => {
+    // const queries = blockIds.map((id) => {
+    //   return { streamId: id };
+    // });
+    // const blocksResponse = await ceramic.multiQuery(queries);
+    // let blocks = [];
+    // for (const key in blocksResponse) {
+    //   let id = `ceramic://${key}`;
+    //   blocks.push({
+    //     id: id,
+    //     ...blocksResponse[key].state.content,
+    //   });
+    // }
+    let blocks: Block[] = [];
+  for (const id of blockIds) {
+    const block = await readBlock(ceramic, id);
+    blocks.push(block);
+  }
     return blocks;
   };
   

@@ -5,7 +5,7 @@ import CreatePage from "../components/CreatePage";
 import PagesList from "../components/PagesList";
 import Sidebar from "../components/Sidebar";
 import Connections from "../components/Connections";
-import Blocks from "../components/Blocks";
+import PageHeader from "../components/PageHeader";
 import Editor from "../components/Editor";
 import useApp from "../hooks/useApp";
 import { useEffect } from "react";
@@ -38,7 +38,7 @@ useEffect(() => {
           <ConnectWallet />
         </Menu>
                 <Editor>
-                    <Blocks />
+                <PageHeader />
                 </Editor>
                 <Connections />
             </Content>

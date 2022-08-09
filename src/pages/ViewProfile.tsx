@@ -3,7 +3,7 @@ import Grid from "../components/Grid";
 import Pages from "../components/PagesList";
 import Sidebar from "../components/Sidebar";
 import Connections from "../components/Connections";
-import Blocks from "../components/Blocks";
+
 import Editor from "../components/Editor";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -38,7 +38,7 @@ function ViewProfile(){
         <Content>
           <Editor>
             <p>View profile: {id}</p>
-            <Blocks />
+           
           </Editor>
           <Connections />
         </Content>
