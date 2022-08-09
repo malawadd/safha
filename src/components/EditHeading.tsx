@@ -34,7 +34,7 @@ const EditHeading = ({ block }: Props) => {
         ref.current.focus();
       }
     }
-  }, []);
+  }, [block, activeBlock]);
 
   const handleChange = useRefCallback(
     (evt) => {

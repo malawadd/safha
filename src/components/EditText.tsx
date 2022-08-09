@@ -21,7 +21,7 @@ interface Props {
   block: Block;
 }
 
-const createPlugins = () => {
+export const createPlugins = () => {
   const prismPlugin = createPrismPlugin({
     prism: Prism,
   });
@@ -44,8 +44,7 @@ const getInitialState = (
 ) => {
   const editorState = editorStates.get(key);
   if (editorState) {
-    EditorState.moveSelectionToEnd(editorState);
-    return EditorState.forceSelection(editorState, editorState.getSelection());
+    return editorState;
   } else {
     const content = properties.title[0][0];
     if (content === "") {
@@ -59,7 +58,7 @@ const getInitialState = (
 
 const EditText = ({ block }: Props) => {
   const {
-    state: { ceramic, activeBlock, editorStates },
+    state: { ceramic, editorStates },
     setBlock,
     saveBlock,
     setActiveBlock,
@@ -97,11 +96,13 @@ const EditText = ({ block }: Props) => {
             },
             saveState: "changed",
           };
-          setBlock(updatedBlock); 
-    }
-  }
+          setBlock(updatedBlock);
+        }
+      }
+    },
     [block, editorState, setEditorState, setBlock]
   );
+
 
   const handleBlur = useCallback(() => {
     if (
@@ -117,11 +118,15 @@ const EditText = ({ block }: Props) => {
     setActiveBlock(block.key);
   }, [block, setActiveBlock]);
 
+  const handleClick = useCallback(() => {
+    ref && ref.current?.focus();
+  }, [ref]);
+
   return (
     <Text>
-       <div className="flex flex-row">
+       <div className="flex flex-row" onClick={handleClick}>
         <SaveSpinner block={block} />
-        <div>
+        <div className="ml-2">
           <Editor
             ref={ref}
             placeholder={"Text"}

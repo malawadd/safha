@@ -4,6 +4,7 @@ import PageLink from "../components/ui/PageLink";
 
 interface Props {
   block: PageBlock;
+  enabled: boolean;
 }
 
 const Page = ({ block }: Props) => {

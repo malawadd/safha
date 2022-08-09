@@ -1,7 +1,6 @@
 import CeramicClient from "@ceramicnetwork/http-client";
 import { TileDocument } from "@ceramicnetwork/stream-tile";
 import { IDX } from "@ceramicstudio/idx";
-import { v4 as uuid } from "uuid";
 import { Block, BlockIndex, Page, PageIndex } from "../blocks";
 import { schemas } from "../config/deployedSchemas.json";
 import ceramic from "./ceramic";
@@ -24,7 +23,6 @@ const loadBlocks = async (idx: IDX, ceramicClient: CeramicClient) => {
   blocksResponse.forEach((block) => {
     blocks.set(block.id, block);
   });
-  console.log(blocks);
   return blocks;
 };
 
@@ -49,7 +47,6 @@ const createBlock = async (
   });
   const blockIndex = await idx.get<BlockIndex>("blocks");
   const blocks = blockIndex?.blocks ?? [];
-  console.log(blockIndex);
   await idx.set("blocks", {
     blocks: [...blocks, newBlock.id.toUrl()],
   });
@@ -88,7 +85,6 @@ const updatePage = async (
   page: PageParams,
   id: string
 ) => {
-  console.log(id);
   return await updateBlock(ceramic, page, id);
 };
 
