@@ -5,13 +5,12 @@ import CreatePage from "../components/CreatePage";
 import PagesList from "../components/PagesList";
 import Sidebar from "../components/Sidebar";
 import Connections from "../components/Connections";
-import PageHeader from "../components/PageHeader";
 import Editor from "../components/Editor";
 import useApp from "../hooks/useApp";
 import { useEffect } from "react";
 import Menu from "../components/Menu";
 import CopyLink from "../components/CopyLink";
-import Blocks from "../components/Blocks";
+
 
 function Home(){
     const { state, loadCeramic, loadPages, loadBlocks } = useApp();
@@ -38,10 +37,7 @@ useEffect(() => {
           <CopyLink />
           <ConnectWallet />
         </Menu>
-                <Editor>
-                <PageHeader />
-                <Blocks />
-                </Editor>
+        <Editor />
                 <Connections />
             </Content>
         </Grid>
