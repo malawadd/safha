@@ -22,10 +22,6 @@ interface Params {
 
   const idxClient = ceramic.getReadOnlyIDX();
 
-  const caip10FromAddress = (address: string) => {
-    return `${address}@eip155:1`.toLowerCase();
-  };
-  
   const parseENSName = (name: string) => {
     if (name.endsWith(".eth")) {
       return name;
@@ -55,7 +51,7 @@ interface Params {
   
   const getProfile = async (address: string) => {
     try {
-      const caip10 = caip10FromAddress(address);
+      const caip10 = idx.caip10FromAddress(address);
       return await idx.loadProfile(idxClient, caip10);
     } catch (e) {
       console.log(e);
@@ -113,7 +109,7 @@ function ViewProfile(){
         <Menu>
         <div className="lg:hidden bg-gray-100 p-2 shadow-md rounded-lg">
           <Link to="/">
-            <h1 className="font-script text-purple-800 text-2xl">📑 Doxx</h1>
+            <h1 className="font-script text-blue-800 text-2xl">📑 Doxx</h1>
           </Link>
         </div>
       </Menu>

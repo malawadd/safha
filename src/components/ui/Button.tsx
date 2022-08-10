@@ -9,7 +9,7 @@ interface Props {
       return (
         <button
           onClick={onClick}
-          className="bg-purple-100 hover:bg-purple-300 py-1 px-2 rounded-lg shadow-md"
+          className="bg-blue-100 hover:bg-blue-300 py-1 px-2 rounded-lg shadow-md"
         >
           {children}
         </button>

@@ -97,6 +97,10 @@ const loadAccounts = async (idx: IDX, did: string) => {
   return await idx.get<CryptoAccounts>("cryptoAccounts", did);
 };
 
+const caip10FromAddress = (address: string) => {
+  return `${address}@eip155:1`.toLowerCase();
+};
+
 const exp = {
   loadPages,
   loadBlocks,
@@ -106,6 +110,7 @@ const exp = {
   updatePage,
   updateBlock,
   loadAccounts,
+  caip10FromAddress,
 
 };
 

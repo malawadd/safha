@@ -217,6 +217,20 @@ function useApp() {
     [dispatch]
   );
 
+  const loadProfile = useCallback(
+    async (idxClient: IDX, address: string) => {
+      try {
+        dispatch({ type: "profile loading" });
+        const caip10 = idx.caip10FromAddress(address);
+        const profile = await idx.loadProfile(idxClient, caip10);
+        dispatch({ type: "profile loaded", profile: profile });
+      } catch (err) {
+        dispatch({ type: "profile failed", error: err });
+      }
+    },
+    [dispatch]
+  );
+
   return {
     state,
     loadProvider,
@@ -234,6 +248,7 @@ function useApp() {
     setActivePage,
     setActiveBlock,
     setEditorState,
+    loadProfile,
   };
 }
 

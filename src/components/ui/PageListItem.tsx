@@ -6,8 +6,8 @@ interface Props {
   active: boolean;
 }
 
-const ACTIVE = "hover:bg-purple-400 bg-purple-300";
-const INACTIVE = "hover:bg-purple-300";
+const ACTIVE = "hover:bg-blue-400 bg-blue-300";
+const INACTIVE = "hover:bg-blue-300";
 
 const PageListItem = ({ page, active }: Props) => {
     const className = `${active ? ACTIVE : INACTIVE} py-1 px-4`;
