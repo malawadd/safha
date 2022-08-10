@@ -1,4 +1,4 @@
-import { Web3Provider } from "@ethersproject/providers";
+import { InfuraProvider, Web3Provider } from "@ethersproject/providers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { WalletLink } from "walletlink";
 import Web3Modal from "web3modal";
@@ -6,7 +6,7 @@ import coinbaseLogo from "../img/coinbase-wallet.svg";
 
 const web3Modal = new Web3Modal({
   network: "mainnet",
-  cacheProvider: false,
+  cacheProvider: true,
   providerOptions: {
     walletconnect: {
       package: WalletConnectProvider,
@@ -19,7 +19,7 @@ const web3Modal = new Web3Modal({
         description: "Scan with WalletLink to connect",
       },
       options: {
-        appName: "Doxx",
+        appName: "safha",
         networkUrl: `https://mainnet.infura.io/v3/f945af26a47449f7b7f9bde521cae4fd`,
         chainId: 1,
       },
@@ -37,6 +37,10 @@ const web3Modal = new Web3Modal({
   },
 });
 
+const getReadOnlyProvider = () => {
+  return new InfuraProvider(1, "f945af26a47449f7b7f9bde521cae4fd");
+};
+
 const loadProvider = async () => {
   const provider = await web3Modal.connect();
   const web3Provider = new Web3Provider(provider);
@@ -48,6 +52,7 @@ const loadProvider = async () => {
 
 const exp = {
   loadProvider,
+  getReadOnlyProvider,
 };
 
 export default exp;

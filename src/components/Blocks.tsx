@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Block } from "../blocks";
 import Heading from "../blocks/Heading";
 import Page from "../blocks/Page";
@@ -29,7 +29,7 @@ const Blocks = ({ enabled }: Props) => {
         deleteBlock(idx.idx, ceramic.ceramic, block.id);
       }
     },
-    [idx, ceramic, blocks, drafts]
+    [idx, ceramic, deleteBlock]
   );
 
   const renderBlock = (block: Block) => {

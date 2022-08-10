@@ -1,17 +1,18 @@
 import { Page } from "../../blocks";
 
 interface Props {
-  page: Page;
+  emoji?: string;
   hover: boolean;
   onClick?: () => void;
+  size: string;
 }
 
-export const EmojiHero = ({ page, hover, onClick }: Props) => {
-    const className = hover ? "cursor-pointer rounded-lg hover:bg-gray-100" : "";
-  
-    return (
-      <div onClick={onClick} className="text-8xl my-4 p-2">
-        <span className={className}>{page.format.page_icon}</span>
-      </div>
-    );
+export const EmojiHero = ({ emoji, hover, onClick, size }: Props) => {
+  const className = hover ? "cursor-pointer rounded-lg hover:bg-gray-100" : "";
+
+  return (
+    <div onClick={onClick} className={`text-${size} my-4 p-2`}>
+      <span className={className}>{emoji}</span>
+    </div>
+  );
 };

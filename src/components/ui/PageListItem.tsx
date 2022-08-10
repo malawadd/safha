@@ -8,10 +8,10 @@ interface Props {
   showToggle: boolean;
   toggled: boolean;
   onToggle: () => void;
+  edit: boolean;
 }
 
-
-const ACTIVE = "hover:bg-blue-400 bg-blue-300";
+const ACTIVE = "hover:bg-bluw-400 bg-blue-300";
 const INACTIVE = "hover:bg-blue-300";
 
 const PageListItem = ({
@@ -21,18 +21,18 @@ const PageListItem = ({
   showToggle,
   toggled,
   onToggle,
+  edit,
 }: Props) => {
   const activeClassName = `${active ? ACTIVE : INACTIVE}`;
   const className = `py-1 pr-4 pl-${
     4 + level * 4
   } flex flex-row justify-between`;
 
-  
-    return (
-      <li className={activeClassName}>
+  return (
+    <li className={activeClassName}>
       <div className={className}>
         <div className="flex-grow truncate overflow-ellipsis">
-          <PageLink page={page} underline={false} spinner />
+          <PageLink page={page} underline={false} edit={edit} spinner />
         </div>
         {showToggle && (
           <span onClick={onToggle} className="cursor-pointer">
@@ -66,8 +66,8 @@ const PageListItem = ({
           </span>
         )}
       </div>
-      </li>
-    );
-  };
-  
-  export default PageListItem;
+    </li>
+  );
+};
+
+export default PageListItem;

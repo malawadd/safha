@@ -11,7 +11,7 @@ function NotFoundPage() {
   return (
     <Grid>
       <Sidebar>
-        <PagesList content={[...state.pages.pageIds, ...state.pages.draftIds]} level={0} />
+        <PagesList content={[...state.pages.pageIds, ...state.pages.draftIds]} level={0}  edit={false} />
       </Sidebar>
       <Content>
         <NotFound />

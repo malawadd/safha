@@ -18,7 +18,7 @@ import "@draft-js-plugins/linkify/lib/plugin.css";
 import "prismjs/themes/prism.css";
 import PluginEditor from "@draft-js-plugins/editor";
 import { useCallback } from "react";
-import BlockMenu from "./ui/BlockMenu";
+
 
 interface Props {
   block: Block;
@@ -60,7 +60,7 @@ const getInitialState = (
 
 const EditText = ({ block }: Props) => {
   const {
-    state: { idx, ceramic, editorStates },
+    state: { ceramic, editorStates },
     setBlock,
     saveBlock,
     setActiveBlock,
