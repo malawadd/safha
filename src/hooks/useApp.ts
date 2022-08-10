@@ -8,6 +8,7 @@ import idx from "../lib/idx";
 import CeramicClient from "@ceramicnetwork/http-client";
 import { Block, Page } from "../blocks";
 import { EditorState } from "draft-js";
+import { StreamID } from "@ceramicnetwork/streamid";
 
 function useApp() {
   const { state, dispatch } = useContext(AppContext);
@@ -23,7 +24,6 @@ function useApp() {
         address: address,
         ensName: ensName,
       });
-
     } catch (err) {
       dispatch({ type: "provider failed", error: err });
     }
@@ -78,7 +78,6 @@ function useApp() {
     }
   }, [dispatch]);
 
- 
   const saveNewPage = useCallback(
     async (idxClient: IDX, ceramic: CeramicClient, page: Page) => {
       dispatch({ type: "new page", pageId: page.id });
@@ -91,7 +90,6 @@ function useApp() {
         block: page,
         savedBlock: savedPage,
       });
-    
       dispatch({
         type: "save page complete",
         pageId: page.id,
@@ -148,16 +146,14 @@ function useApp() {
       } = updatedParent;
       await idx.updateBlock(ceramic, parentParams, parentId);
       let latestBlock =
-      state.blocks.blocks.get(block.id) ||
-      state.blocks.drafts.get(block.id) ||
-      savedBlock;
-
+        state.blocks.blocks.get(block.id) ||
+        state.blocks.drafts.get(block.id) ||
+        savedBlock;
       dispatch({
         type: "save draft block complete",
         block: block,
         savedBlock: { ...latestBlock, id: savedBlock.id },
       });
-      
       dispatch({
         type: "save block complete",
         block: parent,
@@ -170,23 +166,12 @@ function useApp() {
   const saveBlock = useCallback(
     async (ceramic: CeramicClient, block: Block) => {
       dispatch({ type: "save block", block: block });
-      const { id, saveState, drafts,controllers, ...blockParams } = block;
+      const { id, saveState, drafts, controllers, ...blockParams } = block;
       await idx.updateBlock(ceramic, blockParams, id);
       dispatch({
         type: "save block complete",
         block: block,
         savedBlock: block,
-      });
-    },
-    [dispatch]
-  );
-
-  const setEditorState = useCallback(
-    async (key: string, editorState: EditorState) => {
-      dispatch({
-        type: "set editor state",
-        key: key,
-        editorState: editorState,
       });
     },
     [dispatch]
@@ -217,6 +202,17 @@ function useApp() {
     [dispatch]
   );
 
+  const setEditorState = useCallback(
+    async (key: string, editorState: EditorState) => {
+      dispatch({
+        type: "set editor state",
+        key: key,
+        editorState: editorState,
+      });
+    },
+    [dispatch]
+  );
+
   const loadProfile = useCallback(
     async (idxClient: IDX, address: string) => {
       try {
@@ -231,6 +227,33 @@ function useApp() {
     [dispatch]
   );
 
+  const deletePage = useCallback(
+    async (idxClient: IDX, ceramicClient: CeramicClient, pageId: string) => {
+      try {
+        dispatch({ type: "delete block", blockId: pageId });
+        await idx.deletePage(idxClient, ceramicClient, pageId);
+        dispatch({ type: "delete block complete", blockId: pageId });
+        dispatch({ type: "delete page complete", pageId: pageId });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [dispatch]
+  );
+
+  const deleteBlock = useCallback(
+    async (idxClient: IDX, ceramicClient: CeramicClient, blockId: string) => {
+      try {
+        dispatch({ type: "delete block", blockId: blockId });
+        await idx.deleteBlock(idxClient, ceramicClient, blockId);
+        dispatch({ type: "delete block complete", blockId: blockId });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [dispatch]
+  );
+
   return {
     state,
     loadProvider,
@@ -238,17 +261,17 @@ function useApp() {
     loadIDX,
     loadPages,
     loadBlocks,
-   
     saveNewPage,
     newBlock,
     saveNewBlock,
     saveBlock,
-
     setBlock,
     setActivePage,
     setActiveBlock,
     setEditorState,
     loadProfile,
+    deletePage,
+    deleteBlock,
   };
 }
 

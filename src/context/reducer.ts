@@ -21,13 +21,13 @@ type ProviderState =
   | ProviderFailedState
   | ProviderLoadedState;
 
-  type IDXPendingState = { status: PendingStatus };
-  type IDXFailedState = { status: "failed"; error: Error };
-  type IDXDoneState = { status: "done"; idx: IDX };
-  
-  type IDXState = IDXPendingState | IDXFailedState | IDXDoneState;
-  
-  type CeramicPendingState = { status: PendingStatus };
+type IDXPendingState = { status: PendingStatus };
+type IDXFailedState = { status: "failed"; error: Error };
+type IDXDoneState = { status: "done"; idx: IDX };
+
+type IDXState = IDXPendingState | IDXFailedState | IDXDoneState;
+
+type CeramicPendingState = { status: PendingStatus };
 type CeramicFailedState = {
   status: "failed";
   error: Error;
@@ -41,23 +41,27 @@ export type CeramicState =
   | CeramicFailedState
   | CeramicLoadedState;
 
-  type BlocksPendingState = {
-    status: PendingStatus;
-    blocks: Map<string, Block>;
-    drafts: Map<string, Block>;
-  };
-  type BlocksFailedState = {
-    status: "failed";
-    error: Error;
-    blocks: Map<string, Block>;
-    drafts: Map<string, Block>;
+type BlocksPendingState = {
+  status: PendingStatus;
+  blocks: Map<string, Block>;
+  drafts: Map<string, Block>;
+  deleting: string[];
+};
+type BlocksFailedState = {
+  status: "failed";
+  error: Error;
+  blocks: Map<string, Block>;
+  drafts: Map<string, Block>;
+  deleting: string[];
 };
 type BlocksLoadedState = {
   status: "done";
   blocks: Map<string, Block>;
   drafts: Map<string, Block>;
-  };
+  deleting: string[];
+};
 type BlocksState = BlocksPendingState | BlocksFailedState | BlocksLoadedState;
+
 type PagesPendingState = {
   status: PendingStatus;
   pageIds: string[];
@@ -75,8 +79,10 @@ type PagesLoadedState = {
   draftIds: string[];
 };
 type PagesState = PagesPendingState | PagesFailedState | PagesLoadedState;
+
 type ActivePageState = string;
 type ActiveBlockState = string;
+
 type EditorStates = Map<string, EditorState>;
 
 type ProfilePendingState = { status: PendingStatus };
@@ -152,6 +158,11 @@ export type SaveBlockComplete = {
   savedBlock: Block;
 };
 export type SetActiveBlock = { type: "set active block"; blockId: string };
+export type DeleteBlock = { type: "delete block"; blockId: string };
+export type DeleteBlockComplete = {
+  type: "delete block complete";
+  blockId: string;
+};
 
 export type BlocksAction =
   | LoadBlocks
@@ -164,21 +175,9 @@ export type BlocksAction =
   | SaveDraftBlock
   | SaveDraftBlockComplete
   | SaveBlockComplete
-  | SetActiveBlock;
-  
-  export type EditorStateAction = {
-    type: "set editor state";
-    key: string;
-    editorState: EditorState;
-  };
-
-  export type LoadProfile = { type: "profile loading" };
-export type LoadProfileFailed = { type: "profile failed"; error: Error };
-export type SetProfile = {
-  type: "profile loaded";
-  profile: BasicProfile | null;
-};
-export type ProfileAction = LoadProfile | LoadProfileFailed | SetProfile;
+  | SetActiveBlock
+  | DeleteBlock
+  | DeleteBlockComplete;
 
 export type LoadPages = { type: "pages loading" };
 export type LoadPagesFailed = { type: "pages failed"; error: Error };
@@ -190,6 +189,11 @@ export type SavePageComplete = {
   savedPageId: string;
 };
 export type SetActivePage = { type: "set active page"; pageId: string };
+export type DeletePageComplete = {
+  type: "delete page complete";
+  pageId: string;
+};
+
 export type PagesAction =
   | LoadPages
   | LoadPagesFailed
@@ -197,17 +201,30 @@ export type PagesAction =
   | NewPage
   | SavePageComplete
   | SetActivePage
-  | ProfileAction;
+  | DeletePageComplete;
 
+export type EditorStateAction = {
+  type: "set editor state";
+  key: string;
+  editorState: EditorState;
+};
+
+export type LoadProfile = { type: "profile loading" };
+export type LoadProfileFailed = { type: "profile failed"; error: Error };
+export type SetProfile = {
+  type: "profile loaded";
+  profile: BasicProfile | null;
+};
+export type ProfileAction = LoadProfile | LoadProfileFailed | SetProfile;
 
 export type Action =
   | ProviderAction
   | CeramicAction
-  |  IDXAuthAction
+  | IDXAuthAction
   | BlocksAction
   | PagesAction
-  | EditorStateAction;
-
+  | EditorStateAction
+  | ProfileAction;
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -243,7 +260,6 @@ export const reducer = (state: State, action: Action): State => {
         ceramic: {
           status: "done",
           ceramic: action.ceramic,
-          
         },
       };
     case "ceramic failed":
@@ -252,7 +268,6 @@ export const reducer = (state: State, action: Action): State => {
         ceramic: {
           status: "failed",
           error: action.error,
-          
         },
       };
     case "idx authenticating":
@@ -306,45 +321,39 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         pages: { ...state.pages, status: "failed", error: action.error },
       };
-    
-      
-        case "new page":
-
+    case "new page":
       return {
         ...state,
         pages: {
           ...state.pages,
-          draftIds: [...state.pages.draftIds, action.pageId],        },
-       
-      };
-      case "new block":
-        return {
-          ...state,
-          blocks: {
-            ...state.blocks,
-            drafts: state.blocks.drafts.set(action.block.id, action.block),
-          },
-          
-        };
-        case "set block":
-      return {
-        ...state,
-        blocks: {
-          ...state.blocks,
-          blocks: state.blocks.blocks.set(action.block.id, action.block),
+          draftIds: [...state.pages.draftIds, action.pageId],
         },
-        
       };
-      case "set draft block":
+    case "new block":
       return {
         ...state,
         blocks: {
           ...state.blocks,
           drafts: state.blocks.drafts.set(action.block.id, action.block),
         },
-         };
-    
-      case "save block":
+      };
+    case "set block":
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          blocks: state.blocks.blocks.set(action.block.id, action.block),
+        },
+      };
+    case "set draft block":
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          drafts: state.blocks.drafts.set(action.block.id, action.block),
+        },
+      };
+    case "save block":
       return {
         ...state,
         blocks: {
@@ -355,7 +364,7 @@ export const reducer = (state: State, action: Action): State => {
           }),
         },
       };
-      case "save draft block":
+    case "save draft block":
       return {
         ...state,
         blocks: {
@@ -366,81 +375,111 @@ export const reducer = (state: State, action: Action): State => {
           }),
         },
       };
-      case "save draft block complete":
-      const newDrafts = new Map(state.blocks.drafts);
-      newDrafts.delete(action.block.id);
+    case "save draft block complete":
+      const newDraftsBlockComplete = new Map(state.blocks.drafts);
+      newDraftsBlockComplete.delete(action.block.id);
       return {
         ...state,
         blocks: {
           ...state.blocks,
           blocks: state.blocks.blocks.set(action.savedBlock.id, {
             ...action.savedBlock,
+            saveState: "saved",
             key: action.block.key,
           }),
-          drafts: newDrafts,
+          drafts: newDraftsBlockComplete,
         },
       };
-
-      case "save block complete":
-        return {
-          ...state,
-          blocks: {
-            ...state.blocks,
-            blocks: state.blocks.blocks.set(action.savedBlock.id, {
-              ...action.savedBlock,
-              saveState: "saved",
-            }),
-          },
-        };
-
-      case "save page complete":
-        const newDraftIds = state.pages.draftIds.filter(
-          (id) => id !== action.pageId
-        );
-        return {
-          ...state,
-          pages: {
-            ...state.pages,
-            pageIds: [...state.pages.pageIds, action.savedPageId],
-            draftIds: newDraftIds,
-          },
-        };
-      case "set active page":
-        return {
-          ...state,
-          activePage: action.pageId,
-        };
-        case "set active block":
-          return {
-            ...state,
-            activeBlock: action.blockId,
-          };
-          case "set editor state":
-            return {
-              ...state,
-              editorStates: state.editorStates.set(action.key, action.editorState),
-            };
-            case "profile loading":
-              return {
-                ...state,
-                profile: { status: "loading" },
-              };
-            case "profile loaded":
-              return {
-                ...state,
-                profile: {
-                  status: "done",
-                  profile: action.profile,
-                },
-              };
-            case "profile failed":
-              return {
-                ...state,
-                profile: {
-                  status: "failed",
-                  error: action.error,
-                },
-              };
+    case "save block complete":
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          blocks: state.blocks.blocks.set(action.savedBlock.id, {
+            ...action.savedBlock,
+            saveState: "saved",
+          }),
+        },
+      };
+    case "save page complete":
+      const newDraftPageIds = state.pages.draftIds.filter(
+        (id) => id !== action.pageId
+      );
+      return {
+        ...state,
+        pages: {
+          ...state.pages,
+          pageIds: [...state.pages.pageIds, action.savedPageId],
+          draftIds: newDraftPageIds,
+        },
+      };
+    case "set active page":
+      return {
+        ...state,
+        activePage: action.pageId,
+      };
+    case "set active block":
+      return {
+        ...state,
+        activeBlock: action.blockId,
+      };
+    case "set editor state":
+      return {
+        ...state,
+        editorStates: state.editorStates.set(action.key, action.editorState),
+      };
+    case "profile loading":
+      return {
+        ...state,
+        profile: { status: "loading" },
+      };
+    case "profile loaded":
+      return {
+        ...state,
+        profile: {
+          status: "done",
+          profile: action.profile,
+        },
+      };
+    case "profile failed":
+      return {
+        ...state,
+        profile: {
+          status: "failed",
+          error: action.error,
+        },
+      };
+    case "delete page complete":
+      return {
+        ...state,
+        pages: {
+          ...state.pages,
+          pageIds: state.pages.pageIds.filter((id) => id !== action.pageId),
+          draftIds: state.pages.draftIds.filter((id) => id !== action.pageId),
+        },
+      };
+    case "delete block":
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          deleting: [...state.blocks.deleting, action.blockId],
+        },
+      };
+    case "delete block complete":
+      const newBlocks = new Map(state.blocks.blocks);
+      newBlocks.delete(action.blockId);
+      const newDraftsDeleteBlock = new Map(state.blocks.drafts);
+      newDraftsDeleteBlock.delete(action.blockId);
+      return {
+        ...state,
+        blocks: {
+          ...state.blocks,
+          blocks: newBlocks,
+          drafts: newDraftsDeleteBlock,
+          deleting: state.blocks.deleting.filter((id) => id !== action.blockId),
+        },
+      };
     default:
       return state;
   }
@@ -456,10 +495,9 @@ export const initialState: State = {
     status: "pending",
     blocks: new Map<string, Block>(),
     drafts: new Map<string, Block>(),
+    deleting: [],
   },
   activeBlock: "",
   editorStates: new Map<string, EditorState>(),
   profile: { status: "pending" },
-  
-
 };

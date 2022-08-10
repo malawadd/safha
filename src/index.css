@@ -10,11 +10,11 @@
   display: none;
 }
 
-/* [contenteditable="true"]:empty:before {
+[contenteditable="true"]:empty:before {
   content: attr(placeholder);
   display: block;
   color: #aaa;
-} */
+}
 
 .checkable-list-item {
   list-style: none;
