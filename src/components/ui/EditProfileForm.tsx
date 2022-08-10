@@ -23,8 +23,9 @@ const CoverImage = ({ profile, onChange }: Props) => {
   return (
     <div className="absolute bg-gradient-to-tr from-blue-200 via-blue-200 to-blue-50 h-72">
       <ImageInput
+        resizable={false}
         imgClassName="object-cover object-center w-screen h-72 shadow-sm"
-        labelClassName="fixed right-4 top-60"
+        labelClassName=""
         src={
           storage.gatewayUrl(profile.background?.original.src) ||
           "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
@@ -42,8 +43,9 @@ const ImageSelect = ({ profile, onChange }: Props) => {
   return (
     <div className="mb-2 p-2">
       <ImageInput
+      resizable={false}
         imgClassName="shadow-md rounded-lg w-36 h-36 object-cover object-center bg-gradient-to-tr from-blue-200 via-blue-200 to-blue-50"
-        labelClassName="relative bottom-2 left-4"
+        labelClassName="relative bottom-10 left-10"
         src={
           storage.gatewayUrl(profile.image?.original.src) ||
           "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="

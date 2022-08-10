@@ -61,6 +61,7 @@ export interface Image {
   content: string[];
   format: {
     width: number;
+    height: number;
   };
   parent: string;
   saveState: SaveState;
@@ -140,7 +141,8 @@ export const createEmptyImage = (): Image => {
     },
     content: [],
     format: {
-      width: 500,
+      width: 300,
+      height: 200,
     },
     parent: "",
     drafts: [],
