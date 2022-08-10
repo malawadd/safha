@@ -89,7 +89,7 @@ const readBlock = async (
     key: uuid(),
     drafts: [],
     controllers: blockResponse.controllers,
-  };
+  }as Block;;
 };
 
 const readBlocks = async (

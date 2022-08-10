@@ -11,64 +11,17 @@ import telegram from "super-tiny-icons/images/svg/telegram.svg";
 import signal from "super-tiny-icons/images/svg/signal.svg";
 import email from "super-tiny-icons/images/svg/email.svg";
 import keybase from "super-tiny-icons/images/svg/keybase.svg";
+import ImageInput from "./ImageInput";
 
 interface Props {
   profile: BasicProfile;
   onChange: (name: string, file: File) => void;
 }
 
-interface ImageInputProps {
-  src: string;
-  labelClassName?: string;
-  imgClassName?: string;
-  text: string;
-  name: string;
-  alt: string;
-  onChange: (name: string, file: File) => void;
-}
-
-const ImageInput = ({
-  src,
-  imgClassName,
-  labelClassName,
-  text,
-  name,
-  alt,
-  onChange,
-}: ImageInputProps) => {
-  const [file, setFile] = useState(src);
-
-  const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const files = evt.target.files;
-    if (files) {
-      setFile(URL.createObjectURL(files[0]));
-      onChange(evt.target.name, files[0]);
-    }
-  };
-
-  return (
-    <div>
-      <img className={imgClassName} alt={alt} src={file} />
-      <label
-        className={`${labelClassName} z-50 cursor-pointer bg-gray-100 hover:bg-gray-300 py-1 px-2 rounded-lg shadow-md`}
-        htmlFor={name}
-      >
-        {text}
-        <input
-          className="absolute opacity-0 w-0"
-          id={name}
-          name={name}
-          type="file"
-          onChange={handleChange}
-        />
-      </label>
-    </div>
-  );
-};
 
 const CoverImage = ({ profile, onChange }: Props) => {
   return (
-    <div className="absolute bg-gradient-to-tr from-blue-200 via-purple-200 to-purple-50 h-72">
+    <div className="absolute bg-gradient-to-tr from-blue-200 via-blue-200 to-blue-50 h-72">
       <ImageInput
         imgClassName="object-cover object-center w-screen h-72 shadow-sm"
         labelClassName="fixed right-4 top-60"
@@ -89,7 +42,7 @@ const ImageSelect = ({ profile, onChange }: Props) => {
   return (
     <div className="mb-2 p-2">
       <ImageInput
-        imgClassName="shadow-md rounded-lg w-36 h-36 object-cover object-center bg-gradient-to-tr from-blue-200 via-purple-200 to-purple-50"
+        imgClassName="shadow-md rounded-lg w-36 h-36 object-cover object-center bg-gradient-to-tr from-blue-200 via-blue-200 to-blue-50"
         labelClassName="relative bottom-2 left-4"
         src={
           storage.gatewayUrl(profile.image?.original.src) ||
@@ -137,7 +90,7 @@ const UsernameInput = ({
         {text}
       </label>
       <input
-        className="bg-gray-50 border border-purple-200 rounded p-4 focus:bg-white focus:outline-none"
+        className="bg-gray-50 border border-blue-200 rounded p-4 focus:bg-white focus:outline-none"
         type="text"
         id={name}
         autoComplete="off"
@@ -220,7 +173,7 @@ const EditProfileForm = ({ profile, usernames, onSubmit }: FormProps) => {
                   Name
                 </label>
                 <input
-                  className="bg-gray-50 border border-purple-200 rounded p-4 focus:bg-white focus:outline-none"
+                  className="bg-gray-50 border border-blue-200 rounded p-4 focus:bg-white focus:outline-none"
                   type="text"
                   id="name"
                   autoComplete="off"
@@ -245,7 +198,7 @@ const EditProfileForm = ({ profile, usernames, onSubmit }: FormProps) => {
                 Description
               </label>
               <textarea
-                className="bg-gray-50 border border-purple-200 rounded p-4 focus:bg-white focus:outline-none"
+                className="bg-gray-50 border border-blue-200 rounded p-4 focus:bg-white focus:outline-none"
                 cols={40}
                 id="description"
                 autoComplete="off"
@@ -260,7 +213,7 @@ const EditProfileForm = ({ profile, usernames, onSubmit }: FormProps) => {
                   Location
                 </label>
                 <input
-                  className="bg-gray-50 border border-purple-200 rounded p-4 focus:bg-white focus:outline-none"
+                  className="bg-gray-50 border border-blue-200 rounded p-4 focus:bg-white focus:outline-none"
                   type="text"
                   id="location"
                   autoComplete="off"
@@ -274,7 +227,7 @@ const EditProfileForm = ({ profile, usernames, onSubmit }: FormProps) => {
                   URL
                 </label>
                 <input
-                  className="w-64 bg-gray-50 border border-purple-200 rounded p-4 focus:bg-white focus:outline-none"
+                  className="w-64 bg-gray-50 border border-blue-200 rounded p-4 focus:bg-white focus:outline-none"
                   type="text"
                   id="url"
                   autoComplete="off"

@@ -44,7 +44,7 @@ interface Props {
         >
           👉 Heading 3
         </li>
-        <li  className="px-1 py-2 hover:bg-gray-100" onMouseDown={() => {}}>
+        <li  className="px-1 py-2 hover:bg-gray-100" onMouseDown={() => onClick("image")}>
           🖼 Image
         </li>
         </ul>

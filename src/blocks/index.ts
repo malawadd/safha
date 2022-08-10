@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 export type SaveState = "new" | "changed" | "saving" | "saved";
-export type BlockType = "page" | "text" | HeadingType;
+export type BlockType = "image" | "page" | "text" | HeadingType;
 export type HeadingType = "heading-1" | "heading-2" | "heading-3";
 
 
@@ -52,6 +52,23 @@ export interface Heading {
   controllers: string[];
 }
 
+export interface Image {
+  id: string;
+  type: "image";
+  properties: {
+    source: string[][];
+  };
+  content: string[];
+  format: {
+    width: number;
+  };
+  parent: string;
+  saveState: SaveState;
+  drafts: string[];
+  key: string;
+  controllers: string[];
+}
+
 export interface BlockIndex {
   blocks: string[];
 }
@@ -59,7 +76,7 @@ export interface BlockIndex {
 export interface PageIndex {
   pages: string[];
 }
-export type Block = Page | Text | Heading;
+export type Block = Page | Text | Heading | Image;
 export const createEmptyPage = (): Page => {
   return {
     id: uuid(),
@@ -113,6 +130,26 @@ export const createEmptyHeading = (type: HeadingType): Heading => {
   };
 };
 
+export const createEmptyImage = (): Image => {
+  return {
+    id: uuid(),
+    saveState: "new",
+    type: "image",
+    properties: {
+      source: [[]],
+    },
+    content: [],
+    format: {
+      width: 500,
+    },
+    parent: "",
+    drafts: [],
+    key: uuid(),
+    controllers: [],
+  };
+};
+
+
 export const createEmptyBlock = (type: BlockType) => {
   switch (type) {
     case "page":
@@ -125,6 +162,8 @@ export const createEmptyBlock = (type: BlockType) => {
       return createEmptyHeading("heading-2");
     case "heading-3":
       return createEmptyHeading("heading-3");
+      case "image":
+      return createEmptyImage();
   }
 };
 
