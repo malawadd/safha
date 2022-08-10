@@ -8,6 +8,7 @@ const CreatePage = () => {
     state: { idx, ceramic },
   
     saveNewPage,
+    setActivePage,
    
   } = useApp();
 
@@ -15,6 +16,7 @@ const CreatePage = () => {
     if (idx.status === "done" && ceramic.status === "done") {
       const page = createEmptyPage();
       saveNewPage(idx.idx, ceramic.ceramic, page);
+      setActivePage(page.id);
     }
   };
 

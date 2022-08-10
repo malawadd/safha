@@ -1,6 +1,6 @@
 import Content from "../components/ui/Content";
 import Grid from "../components/ui/Grid";
-import Pages from "../components/PagesList";
+import PagesList from "../components/PagesList";
 import Sidebar from "../components/ui/Sidebar";
 import StatusPanel from "../components/StatusPanel";
 import Menu from "../components/ui/Menu";
@@ -14,7 +14,7 @@ import storage from "../lib/storage";
 
 function EditProfile(){
     const {
-        state: { idx, ceramic, provider, profile },
+        state: { idx, ceramic, provider, profile, pages },
         loadCeramic,
         loadProfile,
       } = useApp();
@@ -52,7 +52,7 @@ function EditProfile(){
       if (idx.status === "done") {
         console.log(fileData);
         const files = Object.values(fileData);
-        if (files) {
+        if (files.length > 0) {
           const cid = await storage.storeFiles(files);
           Object.entries(fileData).forEach(async ([name, file]) => {
             console.log(name);
@@ -77,7 +77,7 @@ function EditProfile(){
     return (
         <Grid>
             <Sidebar>
-                <Pages />
+            <PagesList content={[...pages.pageIds, ...pages.draftIds]} level={0} />
             </Sidebar>
             <Menu>
         <ConnectButton />
