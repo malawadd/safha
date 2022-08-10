@@ -3,8 +3,6 @@ import Grid from "../components/ui/Grid";
 import Pages from "../components/PagesList";
 import Sidebar from "../components/ui/Sidebar";
 import StatusPanel from "../components/StatusPanel";
-
-import PageContent from "../components/ui/Editor";
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ceramic from "../lib/ceramic";

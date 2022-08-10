@@ -15,7 +15,6 @@ export type PageParams = Omit<
   "id" | "saveState" | "drafts" | "key" | "editorState" | "controllers"
 >;
 
-
 const loadBlocks = async (idx: IDX, ceramicClient: CeramicClient) => {
   const blockIdsResponse = await idx.get<{ blocks: Array<string> }>("blocks");
   const blockIds = blockIdsResponse?.blocks ?? [];
@@ -30,12 +29,8 @@ const loadBlocks = async (idx: IDX, ceramicClient: CeramicClient) => {
 const loadPages = async (idx: IDX, ceramicClient: CeramicClient) => {
   const pageIdsResponse = await idx.get<{ pages: Array<string> }>("pages");
   const pageIds = pageIdsResponse?.pages ?? [];
- 
   return pageIds;
 };
-
-
-
 
 const createBlock = async (
   idx: IDX,
@@ -63,6 +58,7 @@ const updateBlock = async (
   block: BlockParams,
   id: string
 ) => {
+  console.log(ceramic.did);
   const savedBlock = await ceramic.loadStream<TileDocument>(id);
   await savedBlock.update(block);
 };
@@ -93,6 +89,10 @@ const loadProfile = async (idx: IDX, caip10Id: string) => {
   return await idx.get<BasicProfile>("basicProfile", caip10Id);
 };
 
+const saveProfile = async (idx: IDX, profile: BasicProfile) => {
+  return await idx.set("basicProfile", profile);
+};
+
 const loadAccounts = async (idx: IDX, did: string) => {
   return await idx.get<CryptoAccounts>("cryptoAccounts", did);
 };
@@ -105,13 +105,13 @@ const exp = {
   loadPages,
   loadBlocks,
   createPage,
-  createBlock,
-  loadProfile,
   updatePage,
+  createBlock,
   updateBlock,
+  loadProfile,
   loadAccounts,
   caip10FromAddress,
-
+  saveProfile,
 };
 
 export default exp;

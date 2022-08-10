@@ -2,26 +2,23 @@ import { BasicProfile } from "@ceramicstudio/idx-constants";
 import github from "super-tiny-icons/images/svg/github.svg";
 import twitter from "super-tiny-icons/images/svg/twitter.svg";
 import discord from "super-tiny-icons/images/svg/discord.svg";
-
-
-
+import storage from "../../lib/storage";
 
 interface Props {
-    profile: BasicProfile;
-    address: string;
-    name: string | null;
+  profile: BasicProfile;
+  address: string;
+  name: string | null;
 }
 
-const Profile = ({ profile, address, name }: Props) => {
-    return (
-        <div className="col-span-3">
-      <div className="absolute bg-gradient-to-tr from-blue-200 via-yellow-200 to-blue-50 w-screen h-72">
-      {profile.image && (
+const Profile = ({ profile, name, address }: Props) => {
+  return (
+    <div className="col-span-3">
+      <div className="absolute bg-gradient-to-tr from-blue-200 via-purple-200 to-purple-50 w-screen h-72">
+        {profile.background && (
           <img
             className="object-cover object-center w-screen h-72 shadow-sm"
-            src={
-                "https://ipfs.io//ipfs/QmZD41nhZgcN7WTodubWyM1DLQkSCEF5FsZX1izXBxxgAn"
-            }
+            src={storage.gatewayUrl(profile.background.original.src)}
+            alt="Cover"
           />
         )}
       </div>
@@ -30,8 +27,9 @@ const Profile = ({ profile, address, name }: Props) => {
           <div className="mb-2 p-2">
             {profile.image ? (
               <img
-                className="shadow-md rounded-lg"
-                src={"https://www.fillmurray.com/150/150"}
+                className="shadow-md rounded-lg w-36 h-36 object-center object-cover"
+                src={storage.gatewayUrl(profile.image.original.src)}
+                alt="Profile"
               />
             ) : (
               <span className="text-8xl px-3 py-2 bg-gray-50 rounded-lg shadow-md">
@@ -49,6 +47,7 @@ const Profile = ({ profile, address, name }: Props) => {
                 <a
                   href={`https://etherscan.io/address/${address}`}
                   target="_blank"
+                  rel="noreferrer"
                   className="text-gray-400"
                 >
                   <svg
@@ -114,7 +113,7 @@ const Profile = ({ profile, address, name }: Props) => {
                     d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
                   />
                 </svg>
-                <a href={profile.url} target="_blank">
+                <a href={profile.url} target="_blank" rel="noreferrer">
                   {profile.url}
                 </a>
               </span>
@@ -125,20 +124,32 @@ const Profile = ({ profile, address, name }: Props) => {
           <div className="lg:mt-48 mt-4">
             <div className="mb-2">
               <span className="p-2">
-                <img src={github} className="w-5 mr-1 align-text-top inline" />
-                malawadd
+                <img
+                  src={github}
+                  alt="Github logo"
+                  className="w-5 mr-1 align-text-top inline"
+                />
+                ecmendenhall
               </span>
             </div>
             <div className="mb-1">
               <span className="p-2">
-                <img src={twitter} className="w-5 mr-1 align-text-top inline" />
-                @malawadd
+                <img
+                  src={twitter}
+                  alt="Twitter logo"
+                  className="w-5 mr-1 align-text-top inline"
+                />
+                ecmendenhall
               </span>
             </div>
             <div className="mb-1">
               <span className="p-2">
-                <img src={discord} className="w-5 mr-1 align-text-top inline" />
-                malawadd
+                <img
+                  src={discord}
+                  alt="Discord logo"
+                  className="w-5 mr-1 align-text-top inline"
+                />
+                horsefacts
               </span>
             </div>
           </div>
@@ -147,4 +158,5 @@ const Profile = ({ profile, address, name }: Props) => {
     </div>
   );
 };
+
 export default Profile;
