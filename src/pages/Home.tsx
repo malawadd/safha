@@ -13,6 +13,7 @@ import CopyLink from "../components/CopyLink";
 import CeramicClient from "@ceramicnetwork/http-client";
 import StreamID from "@ceramicnetwork/streamid";
 import Welcome from "../components/ui/Welcome";
+import HomeLinks from "../components/HomeLinks";
 
 function Home() {
   const { state, loadCeramic, loadPages, loadBlocks } = useApp();
@@ -35,14 +36,14 @@ function Home() {
     <Grid>
       <Sidebar>
         <PagesList content={[...state.pages.pageIds, ...state.pages.draftIds]} level={0} edit />
-        <CreatePage />
+        <CreatePage icon />
       </Sidebar>
       <Content>
         <Menu>
           <CopyLink />
           <ConnectWallet />
         </Menu>
-        <Welcome />
+        {state.idx.status === "done" ? <HomeLinks /> : <Welcome />}
         <PageContent />
         <StatusPanel />
       </Content>

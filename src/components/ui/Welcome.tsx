@@ -1,4 +1,4 @@
-import Button from "./Button";
+import WelcomeButton from "../WelcomeButton";
 import { EmojiHero } from "./EmojiHero";
 
 const Welcome = () => {
@@ -105,9 +105,7 @@ const Welcome = () => {
               </p>
             </div>
           </div>
-          <button className="text-xl bg-blue-100 hover:bg-blue-300 py-2 px-4 rounded-lg shadow-md">
-            Safha
-          </button>
+          {/* <WelcomeButton /> */}
         </div>
       </div>
     </div>

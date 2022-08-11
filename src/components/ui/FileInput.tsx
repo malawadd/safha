@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 
 interface Props {
   src: string;
@@ -9,12 +9,11 @@ interface Props {
 }
 
 const FileInput = ({ src, text, name, labelClassName, onChange }: Props) => {
-  const [file, setFile] = useState(src);
+  
 
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const files = evt.target.files;
     if (files) {
-      setFile(URL.createObjectURL(files[0]));
       onChange(evt.target.name, files[0]);
     }
   };

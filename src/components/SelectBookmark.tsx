@@ -1,5 +1,4 @@
 import { Bookmark as BookmarkBlock } from "../blocks";
-import { ReactTinyLink } from "react-tiny-link";
 import { useState } from "react";
 import useApp from "../hooks/useApp";
 import BookmarkEmbed from "./ui/BookmarkEmbed";
@@ -47,7 +46,7 @@ const SelectBookmark = ({ block }: Props) => {
           <span className="text-2xl mr-4">📚</span>
           <div className="flex flex-row flex-grow gap-x-1">
             <input
-              className="flex-grow max-w-72 px-2 py-1 mr-4 border border-gray-300 rounded p-4 focus:border-purple-600 focus:outline-none"
+              className="flex-grow max-w-72 px-2 py-1 mr-4 border border-gray-300 rounded p-4 focus:border-blue-600 focus:outline-none"
               type="text"
               name="url"
               placeholder="URL"

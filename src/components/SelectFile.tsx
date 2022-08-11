@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { File as FileBlock } from "../blocks";
 import useApp from "../hooks/useApp";
 import storage from "../lib/storage";
@@ -10,18 +10,15 @@ interface Props {
     block: FileBlock;
   }
 
-  const SelectImage = ({ block }: Props) => {
+  const SelectFile  = ({ block }: Props) => {
     const {
       state: { ceramic },
       saveBlock,
     } = useApp();
-    const [file, setFile] = useState({});
+    
 
     const onFileChange = async (name: string, file: File) => {
-        setFile({
-          [name]: file,
-        });
-
+        
         const cid = await storage.storeFiles([file]);
     const newBlock = {
       ...block,
@@ -51,6 +48,6 @@ interface Props {
   );
 };
 
-export default SelectImage;
+export default SelectFile ;
 
         

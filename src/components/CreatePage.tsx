@@ -3,7 +3,12 @@ import useApp from "../hooks/useApp";
 import { createEmptyPage } from "../blocks";
 
 
-const CreatePage = () => {
+interface Props {
+  icon: boolean;
+  className?: string;
+}
+
+const CreatePage = ({ icon, className }: Props) => {
   const {
     state: { idx, ceramic },
   
@@ -25,9 +30,11 @@ const CreatePage = () => {
       {idx.status === "done" && (
         <button
           onClick={onClick}
-          className="absolute bottom-0 left-0 w-full p-2 text-left hover:bg-blue-300 border-blue-200 border-t-2"
-        >
-          <span className="text-xl">+</span> New page
+          className={
+            className ||
+            "absolute bottom-0 left-0 w-full p-2 text-left hover:bg-blue-300 border-blue-200 border-t-2"
+          }        >
+             {icon && <span className="text-xl">+ </span>}New page
         </button>
       )}
     </>
