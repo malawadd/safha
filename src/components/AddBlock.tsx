@@ -47,6 +47,43 @@ interface Props {
         <li  className="px-1 py-2 hover:bg-gray-100" onMouseDown={() => onClick("image")}>
           🖼 Image
         </li>
+        <li
+          className="px-1 py-2 hover:bg-gray-100"
+          onMouseDown={() => onClick("file")}
+        >
+          📎 File
+        </li>
+        <li
+          className="px-1 py-2 hover:bg-gray-100"
+          onMouseDown={() => onClick("callout")}
+        >
+          📣 Callout
+        </li>
+        <li
+          className="px-1 py-2 hover:bg-gray-100"
+          onMouseDown={() => onClick("divider")}
+        >
+          📏 Divider
+        </li>
+        <li
+          className="px-1 py-2 hover:bg-gray-100"
+          onMouseDown={() => onClick("bookmark")}
+        >
+          📚 Bookmark
+        </li>
+        <li
+          className="px-1 py-2 hover:bg-gray-100"
+          onMouseDown={() => onClick("embed")}
+        >
+          🛌 Embed
+        </li>
+        <li
+          className="px-1 py-2 hover:bg-gray-100"
+          onMouseDown={() => onClick("nft")}
+        >
+          🎨 NFT
+        </li>
+
         </ul>
       </div>
     );
