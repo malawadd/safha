@@ -12,6 +12,7 @@ import Menu from "../components/ui/Menu";
 import CopyLink from "../components/CopyLink";
 import CeramicClient from "@ceramicnetwork/http-client";
 import StreamID from "@ceramicnetwork/streamid";
+import Welcome from "../components/ui/Welcome";
 
 function Home() {
   const { state, loadCeramic, loadPages, loadBlocks } = useApp();
@@ -41,6 +42,7 @@ function Home() {
           <CopyLink />
           <ConnectWallet />
         </Menu>
+        <Welcome />
         <PageContent />
         <StatusPanel />
       </Content>
